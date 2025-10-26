@@ -13,9 +13,4 @@
   }
 }
 
-.sidebar-toggle {
-  position: fixed;
-  left: 0.5rem;
-  top: 0.5rem;
-  z-index: 1060; /* must be > side-menu z-index (1040) */
-}
+

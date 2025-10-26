@@ -13,6 +13,7 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import { environment } from 'environments/environment';
 import ActiveMenuDirective from './active-menu.directive';
 import NavbarItem from './navbar-item.model';
+import { SidebarService } from '../side-menu/sidebar.service';
 
 @Component({
   selector: 'creatip-navbar',
@@ -34,6 +35,8 @@ export default class NavbarComponent implements OnInit {
   private readonly stateStorageService = inject(StateStorageService);
   private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
+  private readonly sidebar = inject(SidebarService);
+  readonly sidebarOpen = this.sidebar.trackOpen();
 
   constructor() {
     const { VERSION } = environment;
@@ -72,5 +75,9 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed);
+  }
+
+  toggleSidebar(): void {
+    this.sidebar.toggle();
   }
 }

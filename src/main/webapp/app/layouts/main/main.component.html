@@ -3,12 +3,6 @@
   <router-outlet name="navbar" />
 </div>
 
-<!-- left toggle button (mobile) -->
-<!-- remove d-md-none so the button remains visible after menu loads -->
-<button class="btn btn-outline-secondary sidebar-toggle" (click)="sidebar.toggle()" aria-label="Toggle menu" [attr.aria-expanded]="sidebarOpen()">
-  &#9776;
-</button>
-
 <!-- overlay for small screens -->
 <div class="side-overlay" *ngIf="sidebarOpen()" (click)="sidebar.close()"></div>
 
@@ -24,6 +18,6 @@
     </div>
   </div>
 
-  <creatip-footer />
+  <!-- <creatip-footer /> -->
 </div>
 <!-- ...existing code... -->
