@@ -1,0 +1,46 @@
+<div>
+  <h2>
+    <span id="metrics-page-heading" data-cy="metricsPageHeading" creatipTranslate="metrics.title">Application Metrics</span>
+
+    <button class="btn btn-primary float-end" (click)="refresh()">
+      <fa-icon icon="sync"></fa-icon> <span creatipTranslate="metrics.refresh.button">Refresh</span>
+    </button>
+  </h2>
+
+  <h3 creatipTranslate="metrics.jvm.title">JVM Metrics</h3>
+
+  @let metricsRef = metrics();
+  @if (metricsRef && !updatingMetrics()) {
+    <div class="row">
+      <creatip-jvm-memory class="col-md-4" [updating]="updatingMetrics()" [jvmMemoryMetrics]="metricsRef.jvm" />
+
+      <creatip-jvm-threads class="col-md-4" [threads]="threads()" />
+
+      <creatip-metrics-system class="col-md-4" [updating]="updatingMetrics()" [systemMetrics]="metricsRef.processMetrics" />
+    </div>
+  }
+
+  @if (metricsRef?.garbageCollector; as metricsRefGarbageCollector) {
+    <creatip-metrics-garbagecollector [updating]="updatingMetrics()" [garbageCollectorMetrics]="metricsRefGarbageCollector" />
+  }
+
+  @if (updatingMetrics()) {
+    <div class="well well-lg" creatipTranslate="metrics.updating">Updating...</div>
+  }
+
+  @if (metricsRef?.['http.server.requests']; as metricsRefHttpServerRequests) {
+    <creatip-metrics-request [updating]="updatingMetrics()" [requestMetrics]="metricsRefHttpServerRequests" />
+  }
+
+  @if (metricsRef?.services; as metricsRefServices) {
+    <creatip-metrics-endpoints-requests [updating]="updatingMetrics()" [endpointsRequestsMetrics]="metricsRefServices" />
+  }
+
+  @if (metricsRef?.cache; as metricsRefCache) {
+    <creatip-metrics-cache [updating]="updatingMetrics()" [cacheMetrics]="metricsRefCache" />
+  }
+
+  @if (metricsRef && metricsKeyExistsAndObjectNotEmpty('databases')) {
+    <creatip-metrics-datasource [updating]="updatingMetrics()" [datasourceMetrics]="metricsRef.databases" />
+  }
+</div>

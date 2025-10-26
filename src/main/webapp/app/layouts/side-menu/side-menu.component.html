@@ -1,0 +1,60 @@
+
+<nav *ngIf="menu() as items" class="side-menu" [class.open]="open()">
+  <div class="list-group" role="navigation" aria-label="Side menu">
+    <ng-template #renderItems let-items let-parentPath="parentPath">
+      <ng-container *ngFor="let item of items; let i = index">
+        <ng-container *ngIf="item.viewApplicable">
+          <!-- compute a stable key for this node -->
+          <ng-container *ngIf="true as _">
+            <!-- key expression: parentPath ? parentPath + '-' + i : i -->
+            <ng-container *ngTemplateOutlet="identityTemplate; context: { $implicit: item, idx: i, parentPath: parentPath }"></ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-template>
+
+    <!-- identityTemplate renders either a leaf or parent and passes down computed key -->
+    <ng-template #identityTemplate let-item let-idx="idx" let-parentPath="parentPath">
+      <ng-container *ngIf="(parentPath ? parentPath + '-' + idx : idx) as key">
+        <!-- leaf item -->
+        <ng-container *ngIf="!item.children || item.children.length === 0; else parentItem">
+          <a
+            class="list-group-item list-group-item-action"
+            [routerLink]="item.routerLink"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeSidebar()"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+
+        <!-- parent item with children: click header to toggle -->
+        <ng-template #parentItem>
+          <div class="mb-2">
+            <button
+              type="button"
+              class="btn btn-link p-0 text-start w-100 d-flex justify-content-between align-items-center"
+              (click)="toggle(key)"
+              [attr.aria-expanded]="isExpanded(key)"
+              [attr.aria-controls]="'submenu-' + key"
+            >
+              <span class="fw-bold px-2">{{ item.caption }}</span>
+              <span class="caret ms-2" [class.rotate]="isExpanded(key)">▾</span>
+            </button>
+
+            <div
+              id="submenu-{{ key }}"
+              class="list-group ms-2 mt-1"
+              *ngIf="isExpanded(key)"
+            >
+              <ng-container *ngTemplateOutlet="renderItems; context: { $implicit: item.children, parentPath: key }"></ng-container>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+    </ng-template>
+
+    <ng-container *ngTemplateOutlet="renderItems; context: { $implicit: items, parentPath: '' }"></ng-container>
+  </div>
+</nav>

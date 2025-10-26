@@ -1,0 +1,29 @@
+<!-- ...existing code... -->
+<div>
+  <router-outlet name="navbar" />
+</div>
+
+<!-- left toggle button (mobile) -->
+<!-- remove d-md-none so the button remains visible after menu loads -->
+<button class="btn btn-outline-secondary sidebar-toggle" (click)="sidebar.toggle()" aria-label="Toggle menu" [attr.aria-expanded]="sidebarOpen()">
+  &#9776;
+</button>
+
+<!-- overlay for small screens -->
+<div class="side-overlay" *ngIf="sidebarOpen()" (click)="sidebar.close()"></div>
+
+<!-- side menu moved to left -->
+<creatip-side-menu></creatip-side-menu>
+
+<div class="container-fluid" [class.content-shifted]="sidebarOpen()">
+  <div class="row">
+    <div class="col-12">
+      <div class="card jh-card">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+  <creatip-footer />
+</div>
+<!-- ...existing code... -->

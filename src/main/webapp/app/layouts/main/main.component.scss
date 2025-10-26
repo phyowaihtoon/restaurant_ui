@@ -1,0 +1,21 @@
+/* ...existing code... */
+
+/* When sidebar opens on wider screens shift the main content */
+@media (min-width: 768px) {
+  .content-shifted {
+    margin-left: 250px; /* same width as the sidebar */
+    transition: margin-left .25s ease-in-out;
+  }
+
+  /* optional: smoothly shift the inner card too */
+  .content-shifted .jh-card {
+    transition: margin-left .25s ease-in-out;
+  }
+}
+
+.sidebar-toggle {
+  position: fixed;
+  left: 0.5rem;
+  top: 0.5rem;
+  z-index: 1060; /* must be > side-menu z-index (1040) */
+}
